@@ -95,7 +95,9 @@ db_password = "YourSecurePassword123!"
 |----------|------|-------------|---------|
 | `region` | string | AWS region for deployment | `us-east-1` |
 | `db_username` | string | Database username | `applicationuser` |
-| `db_password` | string | Database password | `Change-Me-In-Production!` |
+| `db_password` | string | Database password | `your-secure-password-here` |
+
+**Note**: All variables have defaults in `variables.tf`. You only need to set values in `terraform.tfvars` for variables you want to override.
 
 **Security Note**: Never commit `terraform.tfvars` to version control.
 

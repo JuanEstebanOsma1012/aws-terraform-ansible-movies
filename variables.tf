@@ -1,5 +1,5 @@
 variable "region" {
-  description = "La región de AWS"
+  description = "AWS region where resources will be created"
   type        = string
   default     = "us-east-1"
 }
@@ -14,6 +14,6 @@ variable "db_username" {
 variable "db_password" {
   description = "Password for the RDS database"
   type        = string
-  default     = "Change-Me-In-Production!"
+  default     = "your-secure-password-here"
   sensitive   = true
 }
