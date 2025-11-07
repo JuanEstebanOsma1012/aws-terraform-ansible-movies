@@ -41,11 +41,6 @@ variable "example_var" {
   type        = string
   default     = "sensible_default_value"
   sensitive   = true  # if contains sensitive data
-  
-  validation {
-    condition     = length(var.example_var) > 0
-    error_message = "Variable cannot be empty."
-  }
 }
 ```
 
