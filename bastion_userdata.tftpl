@@ -1,0 +1,40 @@
+#!/bin/bash
+
+# Copiar la llave privada creada en el anfitrion para que la cuenta la use
+mkdir -p /home/ubuntu/.ssh
+cat <<EOF > /home/ubuntu/.ssh/id_rsa
+${private_key}
+EOF
+
+chmod 600 /home/ubuntu/.ssh/id_rsa
+chown ubuntu:ubuntu /home/ubuntu/.ssh/id_rsa
+
+# Instalar pipx y ansible-core
+apt update
+#apt install pipx
+#pipx ensurepath
+#pipx ensurepath --global # optional to allow pipx actions with --global argument
+
+#pipx install ansible-core
+
+#source ~/.bashrc
+
+apt install ansible-core
+
+mkdir -p /etc/ansible/
+
+cat <<EOF > /etc/ansible/hosts
+[backend]
+# establecer las ips de las instancias del backend a través de un template de jinja
+
+[frontend]
+# establecer las ips de las instancias del frontend a través de un template de jinja
+
+[all:vars]
+ansible_python_interpreter=/usr/bin/python3
+host_key_checking=False
+# deshabilitar la configuración del interprete de python y  desabilitar el host-key-checking
+EOF
+
+# ansible-galaxy collection install amazon.aws
+# mysql  -h -u applicationuser -papplicationuser movie_db < /opt/devops-rampup/movie-analyst-db/creation_query.sql && \

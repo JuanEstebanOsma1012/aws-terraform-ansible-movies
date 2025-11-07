@@ -1,0 +1,54 @@
+#!/bin/bash
+set -e
+
+# Agrega la llave publica del bastion para poder usar Ansible despues
+
+mkdir -p /home/ubuntu/.ssh
+echo "${public_key}" >> /home/ubuntu/.ssh/authorized_keys
+chmod 600 /home/ubuntu/.ssh/authorized_keys
+chown -R ubuntu:ubuntu /home/ubuntu/.ssh
+
+# Actualiza y descarga dependencias
+apt update && apt install -y python3 curl git mysql-client-core-8.0
+
+# Descarga e instala nvm:
+curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.40.2/install.sh | bash
+
+# en lugar de reiniciar la shell
+\. "$HOME/.nvm/nvm.sh"
+
+# Descarga e instala Node.js:
+nvm install 22
+
+# Setear variables de entorno
+echo "export DB_HOST=${host}" >> ~/.bashrc
+source ~/.bashrc
+
+# Eliminar el repositorio en caso de que exista
+rm -rf /opt/devops-rampup
+
+# Clonar repositorio del proyecto
+git clone https://github.com/JuanEstebanOsma1012/devops-rampup.git /opt/devops-rampup && \
+
+# Crear el esquema de la base de datos y poblarlo con la semilla
+cd /opt/devops-rampup/movie-analyst-db && \
+mysql  -h ${host} -u applicationuser -papplicationuser movie_db < creation_query.sql
+
+# Eliminar todo menos la carpeta del back
+# find /opt/devops-rampup -mindepth 1 -not -name 'movie-analyst-api' -exec rm -rf {} + && \
+
+# Cambiar a la carpeta donde está el codigo del servidor
+cd /opt/devops-rampup/movie-analyst-api && \
+
+# Instalar dependencias
+npm install && \
+
+node seeds.js
+
+# Correr servidor
+while true; do
+  node server.js
+  echo "Servidor cayó. Reiniciando en 5 segundos..."
+  sleep 5
+done
+

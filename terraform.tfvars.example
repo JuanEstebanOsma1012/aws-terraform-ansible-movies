@@ -1,0 +1,15 @@
+# Example Terraform variables file
+# Copy this file to terraform.tfvars and modify the values as needed
+
+# AWS region where resources will be created
+region = "us-east-1"
+
+# Database credentials (CHANGE THESE IN PRODUCTION!)
+db_username = "applicationuser"
+db_password = "your-secure-password-here"
+
+# You can add additional variables here as needed
+# For example:
+# key_name = "my-key-pair"
+# environment = "production"
+# project_name = "movie-analyst"
